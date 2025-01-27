@@ -3,6 +3,7 @@ import socket
 import string
 from datetime import datetime
 
+import urllib.request
 
 def generate_random_key(length=32) -> str:
     characters = string.ascii_letters + string.digits
@@ -19,3 +20,11 @@ def get_ipv4_address():
 
 def datetime_now() -> int:
     return datetime.now().timestamp()
+
+
+def download_model_with_urllib(url, output_path):
+    try:
+        urllib.request.urlretrieve(url, output_path)
+        print(f"Model downloaded successfully and saved to {output_path}")
+    except Exception as e:
+        print(f"Failed to download the model: {e}")
