@@ -1,16 +1,19 @@
 from fastapi import APIRouter, HTTPException
 
-
-from fortiface.schemas.register_schemas import PersonInDB, PersonOutDB, PersonUpdate, PersonBase
+from fortiface.schemas.register_schemas import (
+    PersonBase,
+    PersonInDB,
+    PersonOutDB,
+    PersonUpdate,
+)
 from fortiface.services.register_services import register_service
+
 router = APIRouter()
 
 
 @router.post("/search", status_code=200)
 def search_vector(data: PersonBase, limit: int = 1, search_params: dict = {}):
-    resp = register_service.search(data=data, 
-                                   limit=limit, 
-                                   search_params=search_params)
+    resp = register_service.search(data=data, limit=limit, search_params=search_params)
     if not resp.get("success"):
         raise HTTPException(status_code=422, detail=resp.get("detail"))
     return resp.get("data")

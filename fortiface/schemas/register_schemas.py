@@ -2,10 +2,14 @@ from pydantic import BaseModel, Field
 
 from fortiface.common.utils import datetime_now
 
-class PersonBase(BaseModel): 
-    vector: list[float] = Field(..., description="Vector representation of a person face.")
 
-class PersonInDB(PersonBase): 
+class PersonBase(BaseModel):
+    vector: list[float] = Field(
+        ..., description="Vector representation of a person face."
+    )
+
+
+class PersonInDB(PersonBase):
     fullname: str = Field(..., description="")
     image_url: str = Field(..., description="")
     metadata: dict = Field(..., description="")
@@ -13,8 +17,9 @@ class PersonInDB(PersonBase):
     modified_at: int = Field(..., default_factory=datetime_now)
 
 
-class PersonUpdate(PersonInDB): 
+class PersonUpdate(PersonInDB):
     pass
 
-class PersonOutDB(PersonInDB): 
+
+class PersonOutDB(PersonInDB):
     id: str

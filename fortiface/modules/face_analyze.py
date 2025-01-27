@@ -5,7 +5,7 @@ from fortiface.modules.base import BaseModule
 from deepface import DeepFace
 
 
-class FaceEmbedding(BaseModule):
+class FaceAnalyze(BaseModule):
     def __init__(self): ...
 
     def execute(self, *args, **kwargs):

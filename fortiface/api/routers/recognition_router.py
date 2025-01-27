@@ -1,6 +1,7 @@
 from app.pipelines.process_pipline import Pipeline
-from fortiface.schemas import ServiceRequest, ServiceResponse
 from fastapi import APIRouter
+
+from fortiface.schemas import ServiceRequest, ServiceResponse
 
 router = APIRouter()
 

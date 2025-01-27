@@ -10,7 +10,6 @@ from fortiface.schemas.vector_schemas import FACE_SCHEMAS, INDEX_PARAMS
 from fortiface.services.base import BaseService
 
 
-
 class RegisterService(BaseService):
     def __init__(
         self,
@@ -35,12 +34,14 @@ class RegisterService(BaseService):
 
         self.init_collection(collection_name=collection_name, schema=schema)
         self.create_partition(partition_name=partition_name)
-        
+
     # C(ollection) level
     def init_collection(self, collection_name: str, schema):
         # Check if the collection exists
         if not self.milvus_client.has_collection(collection_name=collection_name):
-            self.logger.info(f"Collection '{collection_name}' does not exist. Creating...")
+            self.logger.info(
+                f"Collection '{collection_name}' does not exist. Creating..."
+            )
             self.milvus_client.create_collection(
                 collection_name=collection_name,
                 schema=schema,
@@ -101,7 +102,9 @@ class RegisterService(BaseService):
                 partition_name=self.partition_name,
                 data=data,
             )
-            self.logger.info(f"Successully update entity to {data['fullname']} - {result}")
+            self.logger.info(
+                f"Successully update entity to {data['fullname']} - {result}"
+            )
 
             return {"success": True, "data": data}
         except Exception as e:
@@ -112,14 +115,10 @@ class RegisterService(BaseService):
                 "detail": "Invalid data type, please check your input data",
             }
 
-    def search(
-        self, *, data, limit: int = 1, search_params: dict = None
-    ) -> list:
+    def search(self, *, data, limit: int = 1, search_params: dict = None) -> list:
         """Search similar vectors"""
         if not search_params:
-            search_params = {
-                "metric_type": "IP"
-            } 
+            search_params = {"metric_type": "IP"}
 
         try:
             data = data.model_dump()
@@ -132,7 +131,9 @@ class RegisterService(BaseService):
                 params=search_params,
                 output_fields=["*"],
             )
-            self.logger.info(f"Search completed in collection '{self.collection_name}'.")
+            self.logger.info(
+                f"Search completed in collection '{self.collection_name}'."
+            )
             return {"success": True, "data": results}
         except Exception as e:
             message = f"Error get data: {e}"
@@ -188,7 +189,6 @@ class RegisterService(BaseService):
                 "success": False,
                 "detail": f"Error updating vector for ID {identity_id}",
             }
-
 
     def delete_identity(self, *, identity_id: str) -> dict:
         """Delete data by primary keys."""

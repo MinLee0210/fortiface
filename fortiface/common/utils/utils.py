@@ -1,9 +1,9 @@
 import secrets
 import socket
 import string
+import urllib.request
 from datetime import datetime
 
-import urllib.request
 
 def generate_random_key(length=32) -> str:
     characters = string.ascii_letters + string.digits
@@ -19,7 +19,7 @@ def get_ipv4_address():
 
 
 def datetime_now() -> int:
-    return datetime.now().timestamp()
+    return int(datetime.now().timestamp())
 
 
 def download_model_with_urllib(url, output_path):
