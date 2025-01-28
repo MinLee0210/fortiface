@@ -3,7 +3,6 @@ from __future__ import annotations
 import numpy as np
 from pymilvus import MilvusClient
 
-from fortiface.common.logging_config import setup_logger
 from fortiface.common.utils import generate_random_key
 from fortiface.core.config import settings
 from fortiface.schemas.vector_schemas import FACE_SCHEMAS, INDEX_PARAMS

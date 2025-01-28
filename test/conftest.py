@@ -1,8 +1,7 @@
-import pytest
 import cv2
+import pytest
 from deepface import DeepFace
 
-# Path to your test image (adjust this if needed)
 TEST_IMAGE_PATH = "./temp/images/test_00.jpg"
 
 

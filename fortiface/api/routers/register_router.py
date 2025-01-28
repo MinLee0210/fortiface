@@ -1,11 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from fortiface.schemas.register_schemas import (
-    PersonBase,
-    PersonInDB,
-    PersonOutDB,
-    PersonUpdate,
-)
+from fortiface.schemas.register_schemas import (PersonBase, PersonInDB,
+                                                PersonOutDB, PersonUpdate)
 from fortiface.services.register_services import register_service
 
 router = APIRouter()

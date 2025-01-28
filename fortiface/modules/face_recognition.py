@@ -4,22 +4,22 @@ import time
 from typing import IO, Any, Dict, List, Union
 
 import numpy as np
-from deepface import DeepFace
+from pymilvus import MilvusClient
 
 from fortiface.common.utils import datetime_now
 from fortiface.modules.base import BaseModule
 
 
-class FaceEmbedding(BaseModule):
+class FaceRecognition(BaseModule):
     def __init__(self, model_name: str = "DeepFace", detector_backend: str = "opencv"):
         """
-        Initializes the FaceEmbedding module.
+        Initializes the FaceRecognition module.
 
         Args:
             model_name (str): The model to use for embedding extraction (default is "DeepFace").
             detector_backend (str): The backend for face detection (default is "opencv").
         """
-        super().__init__(name="[fortiface |> face_embedding]")
+        super().__init__(name="[fortiface |> face_recognition]")
         self.model_name = model_name
         self.detector_backend = detector_backend
 
@@ -42,19 +42,14 @@ class FaceEmbedding(BaseModule):
         try:
             start_time = time.time()
 
-            # Extract face embeddings
-            embedding = DeepFace.represent(
-                payload,
-                model_name=self.model_name,
-                detector_backend=self.detector_backend,
-            )
+            results = ...
 
             execution_time = time.time() - start_time
             self.logger.info(
                 f"[{datetime_now()}] [{self.name}] Execution completed in {execution_time:.4f} seconds."
             )
 
-            return embedding
+            return results
 
         except RuntimeError as re:
             error_message = f"[{datetime_now()}] [{self.name}] RuntimeError during execution: {str(re)}"
@@ -67,31 +62,3 @@ class FaceEmbedding(BaseModule):
             )
             self.logger.error(error_message)
             raise RuntimeError(error_message) from e
-
-    def _search(self, *, data, limit: int = 1, search_params: dict = None) -> list:
-        """Search similar vectors"""
-        if not search_params:
-            search_params = {"metric_type": "IP"}
-
-        try:
-            data = data.model_dump()
-            vector = data["vector"]
-            results = self.milvus_client.search(
-                collection_name=self.collection_name,
-                partition_name=self.partition_name,
-                data=[vector],
-                limit=limit,
-                params=search_params,
-                output_fields=["*"],
-            )
-            self.logger.info(
-                f"Search completed in collection '{self.collection_name}'."
-            )
-            return {"success": True, "data": results}
-        except Exception as e:
-            message = f"Error get data: {e}"
-            self.logger.error(message)
-            return {
-                "success": False,
-                "detail": "Invalid data type, please check your input data",
-            }
